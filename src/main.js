@@ -1,27 +1,48 @@
-// @ts-nocheck
 import mpeInstrument from 'mpe';
 
-const addHandler = (handler) => {
-  // Request MIDI device access from the Web MIDI API
+const sequencer = {
+  mpeInstrument: mpeInstrument({}),
+  isPlaying: false,
+  isRecording: false,
+  noteSequence: [],
+  startTimeStamp: 0
+};
+
+const startRecording = () => {
+  sequencer.isRecording = true;
   /* eslint-disable no-undef */
+  sequencer.startTimeStamp = window.performance.now();
+};
+
+const stopPlayingAndRecording = () => {
+  sequencer.isPlaying = false;
+  sequencer.isRecording = false;
+};
+
+const onMidi = (event) => {
+  // @ts-ignore
+  sequencer.mpeInstrument.processMidiMessage(event.data);
+  console.log(event.data);
+  if (sequencer.isRecording) {
+    // @ts-ignore
+    const activeNotes = sequencer.mpeInstrument.activeNotes();
+    const elapsedMs = event.timeStamp - sequencer.startTimeStamp;
+    sequencer.noteSequence.push({ elapsedMs, activeNotes });
+  }
+};
+/* eslint-disable no-undef */
+window.onload = () => {
+  /* eslint-disable no-undef */
+  document.getElementById('play').addEventListener('click', console.log);
+  document.getElementById('record').addEventListener('click', startRecording);
+  document
+    .getElementById('stop')
+    .addEventListener('click', stopPlayingAndRecording);
+  /* eslint-disable no-undef */
+  //@ts-ignore
   window.navigator.requestMIDIAccess().then((access) => {
-    // Iterate over the list of inputs returned
     access.inputs.forEach((midiInput) => {
-      // Send 'midimessage' events to the mpe.js `instrument` instance
-      midiInput.addEventListener('midimessage', handler);
+      midiInput.addEventListener('midimessage', onMidi);
     });
   });
 };
-
-const main = () => {
-  // Define `instrument` as an instance of `mpeInstrument`
-  const instrument = mpeInstrument({});
-  const onMidiMessage = (event) => {
-    console.log(event.timeStamp);
-    instrument.processMidiMessage(event.data);
-    console.log(instrument.activeNotes());
-  };
-  addHandler(onMidiMessage);
-};
-
-main();
