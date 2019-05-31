@@ -1,2 +1,2 @@
 # mpe-recorder
-Records the `mpeInstrument` state and playback it
+Web app which records the state of a "mpeInstrument"  and plays it back
