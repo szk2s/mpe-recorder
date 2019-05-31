@@ -1,0 +1,26 @@
+{
+  "name": "mpe-recorder",
+  "version": "1.0.0",
+  "description": "Web app which records the state of a `mpeInstrument`  and plays it back",
+  "main": "index.js",
+  "repository": "https://github.com/szk2s/mpe-recorder",
+  "author": "szk2s <suzukisjss@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "yarn eslint .",
+    "lint:fix": "yarn eslint . --fix",
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "mpe": "^1.0.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "parcel-bundler": "^1.12.3",
+    "prettier": "1.17.1"
+  }
+}
