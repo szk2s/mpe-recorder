@@ -17,6 +17,7 @@ const startRecording = () => {
 const stopPlayingAndRecording = () => {
   sequencer.isPlaying = false;
   sequencer.isRecording = false;
+  console.log(sequencer.noteSequence);
 };
 
 const onMidi = (event) => {
